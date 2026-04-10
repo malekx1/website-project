@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>GameStore</title>
-  <link rel="stylesheet" href="/website-project/assets/css/style.css">
+<link rel="stylesheet" href="/webdev/website-project/assets/css/style.css">
 </head>
 
 <body>
