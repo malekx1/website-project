@@ -1,5 +1,5 @@
-<footer class="footer">
-    <p>© 2026 GameStore</p>
+<footer>
+  <p>© GameStore</p>
 </footer>
 
 </body>
