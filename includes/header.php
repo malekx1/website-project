@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GameStore</title>
-  <link rel="stylesheet" href="http://localhost/webdev/website-project/assets/css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranesh Games – Your One‑Stop Game Store</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Your CSS -->
+  <link rel="stylesheet" href="http://localhost/website-project/assets/css/style.css">
 </head>
-
 <body>
 
 <header>
+  <div class="logo">
+    <h1><i class="fas fa-gamepad"></i> Ranesh Games</h1>
+  </div>
   <nav>
-    <h1>GameStore</h1>
-
     <ul>
-      <li><a href="/webdev/website-project/index.php">Home</a></li>
-      <li><a href="/webdev/website-project/pages/shop.php">Shop</a></li>
-      <li><a href="/webdev/website-project/pages/categories.php">Categories</a></li>
-      <li><a href="/webdev/website-project/pages/cart.php">Cart</a></li>
-      <li><a href="/webdev/website-project/pages/login.php">Login</a></li>
+      <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="#shop"><i class="fas fa-store"></i> Shop</a></li>
+      <li><a href="#categories"><i class="fas fa-tags"></i> Categories</a></li>
+      <li><a href="#cart"><i class="fas fa-shopping-cart"></i> Cart <span id="cart-count">0</span></a></li>
+      <li><a href="#login"><i class="fas fa-user"></i> Login</a></li>
     </ul>
   </nav>
 </header>
+
+<main>

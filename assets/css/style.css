@@ -1,14 +1,13 @@
 :root {
-  --dark: #051F20;
-  --dark2: #0B2B26;
-  --green1: #163832;
-  --green2: #235347;
-  --accent: #8EB69B;
+  --dark: #021024;
+  --dark-blue: #052659;
+  --navy: #1C2E4A;
+  --blue: #5483B3;
+  --blue-light: #7DA0CA;
+  --accent: #C1E8FF;
   --light: #DAF1DE;
 }
-section {
-  padding: 60px;
-}
+
 * {
   margin: 0;
   padding: 0;
@@ -18,106 +17,304 @@ section {
 body {
   background-color: var(--dark);
   color: var(--light);
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
 }
 
-/* NAVBAR */
+/* HEADER & NAV */
 header {
+  background: var(--dark-blue);
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-  background: var(--dark2);
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-header h1 {
+.logo h1 {
   color: var(--accent);
+  font-size: 1.8rem;
+}
+
+.logo i {
+  margin-right: 8px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.8rem;
 }
 
 nav a {
   color: var(--light);
-  margin-left: 15px;
   text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
 }
 
 nav a:hover {
   color: var(--accent);
 }
 
-/* HERO */
-.hero {
-  height: 60vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to right, #051F20, #163832);
+#cart-count {
+  background: var(--accent);
+  color: var(--dark);
+  border-radius: 50%;
+  padding: 0 6px;
+  font-size: 0.8rem;
+  margin-left: 5px;
+}
+
+/* SECTIONS */
+section {
+  padding: 4rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
   text-align: center;
+  margin-bottom: 2rem;
+  color: var(--accent);
+  border-bottom: 3px solid var(--blue);
+  display: inline-block;
+  width: auto;
+}
+
+/* HERO SECTION */
+.hero {
+  background: linear-gradient(135deg, var(--dark), var(--navy));
+  text-align: center;
+  border-radius: 0 0 30px 30px;
+  padding: 5rem 2rem;
 }
 
 .hero h2 {
-  font-size: 40px;
+  font-size: 3rem;
+  color: var(--accent);
 }
 
 .hero p {
-  margin: 10px 0;
+  font-size: 1.2rem;
+  margin: 1rem 0;
 }
 
-.btn-primary {
-  background: var(--accent);
-  padding: 12px 20px;
+.btn {
+  display: inline-block;
+  background: var(--blue);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
   border: none;
   cursor: pointer;
 }
 
-/* SECTIONS */
-.section {
-  padding: 40px;
+.btn:hover {
+  background: var(--accent);
+  color: var(--dark);
+  transform: scale(1.05);
 }
 
-/* GRID */
+/* HOW TO ORDER STEPS */
+.how-to-order {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.step {
+  background: var(--navy);
+  padding: 1rem;
+  border-radius: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+.step i {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+/* GAME GRID */
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
 }
 
-/* GAME CARD */
 .game-card {
-  background: var(--green1);
-  border-radius: 10px;
+  background: var(--dark-blue);
+  border-radius: 20px;
   overflow: hidden;
-  transition: 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .game-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
 .game-card img {
   width: 100%;
-  height: 150px;
+  height: 180px;
   object-fit: cover;
 }
 
 .game-info {
-  padding: 10px;
+  padding: 1rem;
 }
 
-.game-info button {
-  width: 100%;
-  padding: 8px;
-  background: var(--accent);
+.game-info h3 {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.game-price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--blue-light);
+  margin: 0.5rem 0;
+}
+
+.game-caption {
+  font-size: 0.85rem;
+  color: var(--light);
+  margin-bottom: 1rem;
+}
+
+.add-to-cart {
+  background: var(--blue);
+  color: white;
   border: none;
+  padding: 8px 0;
+  width: 100%;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.add-to-cart:hover {
+  background: var(--accent);
+  color: var(--dark);
+}
+
+/* FILTER & SORT BAR */
+.filter-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-bar select, .filter-bar button {
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: none;
+  background: var(--navy);
+  color: var(--light);
   cursor: pointer;
 }
 
-/* REVIEWS */
-.reviews {
+/* CATEGORY BUTTONS */
+.categories-buttons {
   display: flex;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0;
 }
 
-.review {
-  background: var(--green2);
-  padding: 15px;
-  border-radius: 10px;
+.cat-btn {
+  background: var(--navy);
+  padding: 10px 20px;
+  border-radius: 40px;
+  border: none;
+  color: var(--light);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cat-btn.active, .cat-btn:hover {
+  background: var(--accent);
+  color: var(--dark);
+}
+
+/* CART SECTION */
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--navy);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.cart-table th, .cart-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--blue);
+}
+
+.cart-total {
+  text-align: right;
+  font-size: 1.4rem;
+  margin-top: 1rem;
+}
+
+.checkout-btn {
+  background: var(--accent);
+  color: var(--dark);
+  padding: 12px 28px;
+  font-size: 1.1rem;
+}
+
+/* LOGIN PLACEHOLDER */
+.login-form {
+  max-width: 400px;
+  margin: 0 auto;
+  background: var(--navy);
+  padding: 2rem;
+  border-radius: 30px;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 30px;
+  border: none;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+  nav ul {
+    margin-top: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  section {
+    padding: 2rem 1rem;
+  }
+  .hero h2 {
+    font-size: 2rem;
+  }
 }
