@@ -1,22 +1,44 @@
 <?php include 'db_config.php'; ?>
 <?php include 'includes/header.php'; ?>
 
-<!-- HOME SECTION -->
+<!-- HOME SECTION with creative background -->
 <section id="home" class="hero">
   <h2>Your one-stop video game centre</h2>
-  <p>Latest releases, retro classics, indie gems – we have them all.</p>
+  <p>Latest releases, retro classics, indie gems — we have them all.</p>
   <a href="#shop" class="btn">SHOP NOW</a>
 </section>
 
+<!-- HOW TO ORDER - new circular design + video -->
 <section id="how-to-order">
   <h2 class="section-title">How to Order</h2>
   <div class="how-to-order">
-    <div class="step"><i class="fas fa-search"></i><h3>1. Browse</h3><p>Find your favorite game</p></div>
-    <div class="step"><i class="fas fa-cart-plus"></i><h3>2. Add to Cart</h3><p>Click 'Add to Cart'</p></div>
-    <div class="step"><i class="fas fa-credit-card"></i><h3>3. Checkout</h3><p>Pay securely</p></div>
+    <div class="step">
+      <div class="step-circle"><i class="fas fa-search fa-2x"></i></div>
+      <h3>1. Browse</h3>
+      <p>Find your favorite game</p>
+    </div>
+    <div class="step">
+      <div class="step-circle"><i class="fas fa-cart-plus fa-2x"></i></div>
+      <h3>2. Add to Cart</h3>
+      <p>Click 'Add to Cart'</p>
+    </div>
+    <div class="step">
+      <div class="step-circle"><i class="fas fa-credit-card fa-2x"></i></div>
+      <h3>3. Checkout</h3>
+      <p>Pay securely</p>
+    </div>
+  </div>
+  
+  <!-- Video tutorial placeholder -->
+  <div class="video-tutorial">
+    <div class="video-thumb">
+      <img src="https://placehold.co/800x400/1C2E4A/C1E8FF?text=Watch+How+to+Order+%E2%96%B6" alt="Video tutorial thumbnail">
+      <div class="play-btn"><i class="fas fa-play"></i></div>
+    </div>
   </div>
 </section>
 
+<!-- TOP SELLING -->
 <section id="top-selling">
   <h2 class="section-title">🔥 Top Selling Games</h2>
   <div class="games-grid" id="top-grid"></div>
@@ -43,7 +65,7 @@
   <div class="games-grid" id="shop-grid"></div>
 </section>
 
-<!-- CATEGORIES SECTION (buttons) -->
+<!-- CATEGORIES BUTTONS -->
 <section id="categories">
   <h2 class="section-title">📂 Browse by Category</h2>
   <div class="categories-buttons">
@@ -72,14 +94,14 @@
   <button id="checkout-btn" class="btn checkout-btn">Proceed to Payment</button>
 </section>
 
-<!-- LOGIN PLACEHOLDER -->
+<!-- LOGIN / REGISTER DEMO -->
 <section id="login">
   <h2 class="section-title">🔐 Login / Register</h2>
   <div class="login-form">
-    <input type="email" placeholder="Email">
-    <input type="password" placeholder="Password">
+    <input type="email" placeholder="Email" id="demo-email">
+    <input type="password" placeholder="Password" id="demo-password">
     <button class="btn">Login</button>
-    <p style="margin-top:1rem">New user? <a href="#" style="color:var(--accent)">Create account</a></p>
+    <p style="margin-top:1rem">New user? <a href="#" id="demo-register">Create account</a></p>
   </div>
 </section>
 

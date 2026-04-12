@@ -1,4 +1,4 @@
-// ---------- SMOOTH SCROLLING ----------
+// ==================== SMOOTH SCROLLING ====================
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
     e.preventDefault();
@@ -10,20 +10,34 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ---------- GAME DATA (front-end demo) ----------
-// Backend teammates will replace this with PHP/MySQL later
+// ==================== GAME DATA (with working image placeholders) ====================
 const gamesData = [
-  { id: 1, name: "Mario Kart 8 Deluxe", price: 49.99, category: "Racing", caption: "Race with friends in chaotic fun!", img: "assets/images/mario.jpg", popular: 95 },
-  { id: 2, name: "Stardew Valley", price: 14.99, category: "Indie", caption: "Grow your farm, build relationships.", img: "assets/images/stardew.jpg", popular: 88 },
-  { id: 3, name: "Resident Evil 4", price: 39.99, category: "Horror", caption: "Survive the nightmare.", img: "assets/images/residentEvil.jpg", popular: 92 },
-  { id: 4, name: "Among Us", price: 4.99, category: "Co-op", caption: "Teamwork & betrayal in space.", img: "assets/images/amongus.jpg", popular: 70 },
-  { id: 5, name: "Hollow Knight", price: 15.99, category: "Indie", caption: "Beautiful hand-drawn adventure.", img: "assets/images/hollow.jpg", popular: 89 },
-  { id: 6, name: "Phasmophobia", price: 13.99, category: "Co-op", caption: "Ghost hunting with friends.", img: "assets/images/phasmo.jpg", popular: 85 }
+  { id: 1, name: "Mario Kart 8 Deluxe", price: 49.99, category: "Racing", caption: "Race with friends in chaotic fun!", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Mario+Kart", popular: 95 },
+  { id: 2, name: "Stardew Valley", price: 14.99, category: "Indie", caption: "Grow your farm, build relationships.", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Stardew+Valley", popular: 88 },
+  { id: 3, name: "Resident Evil 4", price: 39.99, category: "Horror", caption: "Survive the nightmare.", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Resident+Evil", popular: 92 },
+  { id: 4, name: "Among Us", price: 4.99, category: "Co-op", caption: "Teamwork & betrayal in space.", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Among+Us", popular: 70 },
+  { id: 5, name: "Hollow Knight", price: 15.99, category: "Indie", caption: "Beautiful hand-drawn adventure.", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Hollow+Knight", popular: 89 },
+  { id: 6, name: "Phasmophobia", price: 13.99, category: "Co-op", caption: "Ghost hunting with friends.", img: "https://placehold.co/300x180/1C2E4A/C1E8FF?text=Phasmophobia", popular: 85 }
 ];
 
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Helper: render shop grid
+// ==================== TOAST FUNCTION ====================
+function showToast(message, icon = "fa-check-circle") {
+  const existingToast = document.querySelector('.toast-notification');
+  if(existingToast) existingToast.remove();
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast-notification';
+  toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 2500);
+}
+
+// ==================== RENDER SHOP GRID ====================
 function renderShop(filterCategory = "all", sortBy = "default") {
   let filtered = [...gamesData];
   if(filterCategory !== "all") {
@@ -36,9 +50,10 @@ function renderShop(filterCategory = "all", sortBy = "default") {
   
   const container = document.getElementById("shop-grid");
   if(!container) return;
+  
   container.innerHTML = filtered.map(game => `
     <div class="game-card" data-category="${game.category}">
-      <img src="${game.img}" alt="${game.name}" onerror="this.src='https://placehold.co/300x180?text=No+Image'">
+      <img src="${game.img}" alt="${game.name}" style="width:100%; height:180px; object-fit:cover; background: var(--navy);">
       <div class="game-info">
         <h3>${game.name}</h3>
         <div class="game-price">$${game.price}</div>
@@ -48,7 +63,7 @@ function renderShop(filterCategory = "all", sortBy = "default") {
     </div>
   `).join('');
   
-  // attach add-to-cart events
+  // attach events
   document.querySelectorAll('.add-to-cart').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = parseInt(btn.dataset.id);
@@ -57,18 +72,53 @@ function renderShop(filterCategory = "all", sortBy = "default") {
   });
 }
 
-// Add to cart
+// ==================== RENDER TOP SELLING (on home) ====================
+function renderTopSelling() {
+  const topContainer = document.getElementById("top-grid");
+  if(!topContainer) return;
+  
+  // take top 3 by popularity
+  const top3 = [...gamesData].sort((a,b) => b.popular - a.popular).slice(0, 3);
+  topContainer.innerHTML = top3.map(game => `
+    <div class="game-card">
+      <img src="${game.img}" alt="${game.name}" style="width:100%; height:180px; object-fit:cover;">
+      <div class="game-info">
+        <h3>${game.name}</h3>
+        <div class="game-price">$${game.price}</div>
+        <div class="game-caption">${game.caption}</div>
+        <button class="add-to-cart" data-id="${game.id}">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
+  
+  document.querySelectorAll('#top-grid .add-to-cart').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = parseInt(btn.dataset.id);
+      addToCart(id);
+    });
+  });
+}
+
+// ==================== ADD TO CART with toast & slide hint ====================
 function addToCart(gameId) {
   const game = gamesData.find(g => g.id === gameId);
   if(!game) return;
   const existing = cart.find(item => item.id === gameId);
   if(existing) {
     existing.quantity += 1;
+    showToast(`${game.name} quantity increased to ${existing.quantity}`, "fa-plus-circle");
   } else {
     cart.push({ ...game, quantity: 1 });
+    showToast(`${game.name} added to cart!`, "fa-cart-plus");
   }
   saveCart();
   updateCartUI();
+  // Optional: highlight cart icon
+  const cartLink = document.querySelector('nav a[href="#cart"]');
+  if(cartLink) {
+    cartLink.style.animation = "pulseBorder 0.5s";
+    setTimeout(() => cartLink.style.animation = "", 500);
+  }
 }
 
 function saveCart() {
@@ -111,7 +161,7 @@ function updateCartUI() {
   }).join('');
   totalSpan.textContent = total.toFixed(2);
   
-  // attach quantity change & remove events
+  // attach events
   document.querySelectorAll('.cart-qty').forEach(input => {
     input.addEventListener('change', (e) => {
       const id = parseInt(input.dataset.id);
@@ -129,11 +179,12 @@ function updateCartUI() {
       cart = cart.filter(i => i.id !== id);
       saveCart();
       updateCartUI();
+      showToast("Item removed", "fa-trash");
     });
   });
 }
 
-// Filter & Sort logic
+// ==================== FILTER & SORT LOGIC ====================
 let currentCategory = "all";
 let currentSort = "default";
 
@@ -141,25 +192,56 @@ function applyFiltersAndRender() {
   renderShop(currentCategory, currentSort);
 }
 
-// Event listeners for filter/sort
+// ==================== VIDEO TUTORIAL POPUP ====================
+function setupVideoTutorial() {
+  const videoThumb = document.querySelector('.video-thumb');
+  if(videoThumb) {
+    videoThumb.addEventListener('click', () => {
+      // Simple alert - you can replace with actual video modal
+      alert("Video tutorial would play here. (Embed YouTube or Lottie animation)");
+    });
+  }
+}
+
+// ==================== FAKE LOGIN/REGISTER (demo) ====================
+function setupLogin() {
+  const loginBtn = document.querySelector('#login .btn');
+  if(loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      alert("Login/Register is a demo. Backend integration required.");
+    });
+  }
+  const createLink = document.querySelector('#login a');
+  if(createLink) {
+    createLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert("Account creation demo. Will be connected to database later.");
+    });
+  }
+}
+
+// ==================== DOM CONTENT LOADED ====================
 document.addEventListener('DOMContentLoaded', () => {
+  // Render all dynamic content
+  renderTopSelling();
   renderShop("all", "default");
   updateCartUI();
   updateCartCount();
   
-  // Category filter dropdown
+  // Filter dropdown
   const catFilter = document.getElementById('category-filter');
   if(catFilter) {
     catFilter.addEventListener('change', (e) => {
       currentCategory = e.target.value;
       applyFiltersAndRender();
-      // highlight active category button
+      // highlight category buttons
       document.querySelectorAll('.cat-btn').forEach(btn => {
         if(btn.dataset.cat === currentCategory) btn.classList.add('active');
         else btn.classList.remove('active');
       });
     });
   }
+  
   // Sort dropdown
   const sortSelect = document.getElementById('sort-select');
   if(sortSelect) {
@@ -168,7 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
       applyFiltersAndRender();
     });
   }
-  // Category buttons (from categories section)
+  
+  // Category buttons
   document.querySelectorAll('.cat-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const cat = btn.dataset.cat;
@@ -180,15 +263,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  // Checkout simulation
+  // Checkout button
   const checkoutBtn = document.getElementById('checkout-btn');
   if(checkoutBtn) {
     checkoutBtn.addEventListener('click', () => {
-      if(cart.length === 0) alert("Your cart is empty!");
-      else alert("Payment gateway would open here. (Backend integration later)");
+      if(cart.length === 0) {
+        showToast("Cart is empty", "fa-exclamation-triangle");
+      } else {
+        alert("Payment gateway would open here. (Backend later)");
+      }
     });
   }
+  
+  // Video tutorial
+  setupVideoTutorial();
+  // Login demo
+  setupLogin();
 });
-
-// Helper for addToCart defined earlier
-window.addToCart = addToCart;
