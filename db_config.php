@@ -5,7 +5,7 @@ $pass = "";
 $db_name = "my_db";
 
 // simple check
-$conn = mysqli_connect($host, $user, $pass, $db_name , 8080);
+$conn = mysqli_connect($host, $user, $pass, $db_name , 3306);
 
 // Check connection
 if (!$conn) {
