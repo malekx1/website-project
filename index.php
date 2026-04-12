@@ -1,3 +1,4 @@
+<?php include 'db_config.php'; ?>
 <?php include 'includes/header.php'; ?>
 
 <!-- HOME SECTION -->
