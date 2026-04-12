@@ -1,5 +1,5 @@
  <?php
-    include"db_config.php";
+    include"my_db.php";
     $email =$_POST['email'];
     $password = $_POST['password'];
     $sql="select*from user where email='$email' and password='$password'";
