@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 16, 2026 at 12:10 AM
+-- Generation Time: Apr 16, 2026 at 10:49 AM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -129,6 +129,18 @@ CREATE TABLE IF NOT EXISTS `review` (
   KEY `products_id` (`products_id`)
 ) ;
 
+--
+-- Dumping data for table `review`
+--
+
+INSERT INTO `review` (`id`, `users_id`, `products_id`, `rating`, `review`, `created_at`) VALUES
+(1, 1, 1, 5, 'This is the best racing game ever! The tracks are amazing.', '2026-04-16 12:27:31'),
+(2, 2, 1, 3, 'Decent game .', '2026-04-16 12:29:50'),
+(3, 7, 2, 5, 'The most relaxing game I have ever played. Great for chilling out!', '2026-04-16 12:34:37'),
+(4, 4, 2, 4, 'Nice game!', '2026-04-16 12:36:14'),
+(5, 1, 3, 5, 'Terrifying and action-packed! The remake does the original justice. 10/10.', '2026-04-16 12:42:46'),
+(6, 6, 3, 5, 'love this game.', '2026-04-16 12:44:46');
+
 -- --------------------------------------------------------
 
 --
@@ -144,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `profile_pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
