@@ -3,108 +3,123 @@ session_start();
 include "db_config.php";
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.php");
+    header("Location: login.php");
     exit();
 }
 
 $u_id = $_SESSION['user_id'];
-$message = "";
 
-// --- HANDLE PROFILE UPDATE (Username & Image Upload) ---
+// Handle profile update (username & profile picture)
 if (isset($_POST['update_profile'])) {
     $new_username = mysqli_real_escape_string($conn, $_POST['username']);
-    $pfp_name = $_FILES['pfp_file']['name'];
     
-    // If a new file was uploaded
-    if (!empty($pfp_name)) {
-        $target_dir = "uploads/";
-        if (!is_dir($target_dir)) { mkdir($target_dir); } // Create folder if missing
-        
-        $target_file = $target_dir . time() . "_" . basename($pfp_name);
-        
+    // Handle file upload
+    if (isset($_FILES['pfp_file']) && $_FILES['pfp_file']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = "uploads/";
+        if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+        $file_name = time() . "_" . basename($_FILES['pfp_file']['name']);
+        $target_file = $upload_dir . $file_name;
         if (move_uploaded_file($_FILES['pfp_file']['tmp_name'], $target_file)) {
-            // Update DB with the new file path
-            mysqli_query($conn, "UPDATE users SET username = '$new_username', pfp_url = '$target_file' WHERE id = '$u_id'");
+            // Update both username and profile_pic
+            $update = mysqli_prepare($conn, "UPDATE users SET username = ?, profile_pic = ? WHERE id = ?");
+            mysqli_stmt_bind_param($update, "ssi", $new_username, $target_file, $u_id);
+            mysqli_stmt_execute($update);
+            mysqli_stmt_close($update);
+        } else {
+            // Error uploading file, but still update username
+            $update = mysqli_prepare($conn, "UPDATE users SET username = ? WHERE id = ?");
+            mysqli_stmt_bind_param($update, "si", $new_username, $u_id);
+            mysqli_stmt_execute($update);
+            mysqli_stmt_close($update);
         }
     } else {
-        // Just update username if no picture was selected
-        mysqli_query($conn, "UPDATE users SET username = '$new_username' WHERE id = '$u_id'");
+        // No new picture, just update username
+        $update = mysqli_prepare($conn, "UPDATE users SET username = ? WHERE id = ?");
+        mysqli_stmt_bind_param($update, "si", $new_username, $u_id);
+        mysqli_stmt_execute($update);
+        mysqli_stmt_close($update);
     }
     $_SESSION['username'] = $new_username;
-    header("Location: profile.php?success=1");
+    header("Location: profile.php?updated=1");
     exit();
 }
 
-$user_query = mysqli_query($conn, "SELECT * FROM users WHERE id = '$u_id'");
-$user_data = mysqli_fetch_assoc($user_query);
-$library_result = mysqli_query($conn, "SELECT * FROM library WHERE users_id = '$u_id' ORDER BY order_id DESC");
-?>
+// Fetch user data
+$stmt = mysqli_prepare($conn, "SELECT id, username, email, pfp_url FROM users WHERE id = ?");
+mysqli_stmt_bind_param($stmt, "i", $u_id);
+mysqli_stmt_execute($stmt);
+$user_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+mysqli_stmt_close($stmt);
 
+// Fetch user library (purchased games)
+$library_query = "SELECT l.*, p.name FROM library l JOIN products p ON l.products_id = p.product_id WHERE l.users_id = ? ORDER BY l.order_id DESC";
+$lib_stmt = mysqli_prepare($conn, $library_query);
+mysqli_stmt_bind_param($lib_stmt, "i", $u_id);
+mysqli_stmt_execute($lib_stmt);
+$library_result = mysqli_stmt_get_result($lib_stmt);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Profile // <?php echo $user_data['username']; ?></title>
+    <title>Profile - <?php echo htmlspecialchars($user_data['username']); ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="aesthetic-profile">
-
+<body>
 <?php include 'includes/header.php'; ?>
 
-<div class="profile-layout">
-    <div class="glass-container">
-        <div class="user-hero">
-            <div class="pfp-wrapper">
+<div class="profile-layout" style="max-width: 1000px; margin: 2rem auto;">
+    <div class="glass-container" style="background: var(--navy); padding: 2rem; border-radius: 30px;">
+        <div class="user-hero" style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+            <div class="pfp-wrapper" style="position: relative;">
                 <?php 
-                    $display_img = !empty($user_data['pfp_url']) ? $user_data['pfp_url'] : 'https://ui-avatars.com/api/?name='.$user_data['username'].'&background=1b2838&color=67c1f5&size=200';
+                    $pfp = !empty($user_data['profile_pic']) ? $user_data['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($user_data['username']).'&background=1b2838&color=67c1f5&size=150';
                 ?>
-                <img src="<?php echo $display_img; ?>" class="round-pfp">
-                <button class="edit-overlay" onclick="document.getElementById('edit-box').style.display='block'">
+                <img src="<?php echo $pfp; ?>" class="round-pfp" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
+                <button onclick="document.getElementById('edit-box').style.display='flex'" class="edit-overlay" style="position: absolute; bottom: 5px; right: 5px; background: var(--accent); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">
                     <i class="fas fa-camera"></i>
                 </button>
             </div>
-            
             <div class="user-titles">
-                <h1 class="big-username"><?php echo htmlspecialchars($user_data['username']); ?></h1>
-                <p class="user-email"><?php echo $user_data['email']; ?></p>
+                <h1 style="color: var(--accent); font-size: 2.5rem;"><?php echo htmlspecialchars($user_data['username']); ?></h1>
+                <p style="color: var(--blue-light);"><?php echo htmlspecialchars($user_data['email']); ?></p>
             </div>
         </div>
 
-        <div id="edit-box" class="edit-modal-content" style="display:none;">
-            <form action="profile.php" method="POST" enctype="multipart/form-data" class="modern-form">
-                <h3>Update Profile</h3>
-                <input type="text" name="username" value="<?php echo $user_data['username']; ?>" required>
-                <label for="file-upload" class="custom-file-upload">
-                    <i class="fas fa-upload"></i> Choose Picture from Computer
-                </label>
-                <input id="file-upload" type="file" name="pfp_file" accept="image/*">
-                <div class="form-btns">
-                    <button type="submit" name="update_profile" class="save-btn">Apply Changes</button>
-                    <button type="button" onclick="document.getElementById('edit-box').style.display='none'" class="cancel-btn">Cancel</button>
+        <!-- Edit modal -->
+        <div id="edit-box" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000;">
+            <form action="profile.php" method="POST" enctype="multipart/form-data" style="background: var(--dark-blue); padding: 2rem; border-radius: 30px; width: 90%; max-width: 400px;">
+                <h3 style="color: var(--accent);">Update Profile</h3>
+                <input type="text" name="username" value="<?php echo htmlspecialchars($user_data['username']); ?>" required style="width:100%; margin: 10px 0; padding: 10px; border-radius: 10px;">
+                <input type="file" name="pfp_file" accept="image/*" style="margin: 10px 0;">
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" name="update_profile" class="btn">Save</button>
+                    <button type="button" onclick="document.getElementById('edit-box').style.display='none'" class="btn" style="background: gray;">Cancel</button>
                 </div>
             </form>
         </div>
 
-        <div class="library-header-modern">
-            <h2><i class="fas fa-gamepad"></i> Owned Games</h2>
-        </div>
+        <hr style="margin: 2rem 0; border-color: var(--blue);">
 
-        <div class="table-scroll">
-            <table class="modern-table">
+        <h2 style="color: var(--accent);"><i class="fas fa-gamepad"></i> My Games</h2>
+        <div class="table-scroll" style="overflow-x: auto;">
+            <table style="width:100%; border-collapse: collapse;">
                 <thead>
-                    <tr>
-                        <th>Order</th>
-                        <th>Product ID</th>
-                        <th>Total</th>
+                    <tr style="background: var(--dark);">
+                        <th style="padding: 12px;">Order ID</th>
+                        <th style="padding: 12px;">Game</th>
+                        <th style="padding: 12px;">Price</th>
+                        <th style="padding: 12px;">Purchase Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php while($row = mysqli_fetch_assoc($library_result)): ?>
-                        <tr class="modern-row">
-                            <td>#<?php echo $row['order_id']; ?></td>
-                            <td><span class="id-badge"><?php echo $row['products_id']; ?></span></td>
-                            <td class="price-bold">$<?php echo number_format($row['price'], 2); ?></td>
+                        <tr style="border-bottom: 1px solid var(--blue);">
+                            <td style="padding: 12px;">#<?php echo $row['order_id']; ?></td>
+                            <td style="padding: 12px;"><?php echo htmlspecialchars($row['name']); ?></td>
+                            <td style="padding: 12px;">$<?php echo number_format($row['price'], 2); ?></td>
+                            <td style="padding: 12px;"><?php echo $row['purchase_date']; ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
