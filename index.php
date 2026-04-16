@@ -1,16 +1,12 @@
-<?php 
-include 'includes/header.php'; 
-include 'db_config.php'; 
-?>
-
-<!-- HOME SECTION with creative background -->
+<?php include 'includes/header.php'; ?>
+<!-- HOME SECTION with animated gradient -->
 <section id="home" class="hero">
   <h2>Your one-stop video game centre</h2>
   <p>Latest releases, retro classics, indie gems — we have them all.</p>
   <a href="#shop" class="btn">SHOP NOW</a>
 </section>
 
-<!-- HOW TO ORDER - new circular design + video -->
+<!-- How to Order -->
 <section id="how-to-order">
   <h2 class="section-title">How to Order</h2>
   <div class="how-to-order">
@@ -31,22 +27,19 @@ include 'db_config.php';
     </div>
   </div>
   
-  <!-- Video tutorial placeholder -->
+  <!-- VIDEO TUTORIAL with real YouTube link -->
   <div class="video-tutorial">
-    <div class="video-thumb">
-      <img src="https://placehold.co/800x400/1C2E4A/C1E8FF?text=Watch+How+to+Order+%E2%96%B6" alt="Video tutorial thumbnail">
-      <div class="play-btn"><i class="fas fa-play"></i></div>
-    </div>
+  <iframe width="100%" height="400" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="How to Order" frameborder="0" allowfullscreen></iframe>
   </div>
 </section>
 
-<!-- TOP SELLING -->
+<!-- Top Selling -->
 <section id="top-selling">
   <h2 class="section-title">🔥 Top Selling Games</h2>
   <div class="games-grid" id="top-grid"></div>
 </section>
 
-<!-- SHOP SECTION -->
+<!-- Shop -->
 <section id="shop">
   <h2 class="section-title">🎮 Game Collection</h2>
   <div class="filter-bar">
@@ -67,7 +60,7 @@ include 'db_config.php';
   <div class="games-grid" id="shop-grid"></div>
 </section>
 
-<!-- CATEGORIES BUTTONS -->
+<!-- Categories -->
 <section id="categories">
   <h2 class="section-title">📂 Browse by Category</h2>
   <div class="categories-buttons">
@@ -79,7 +72,7 @@ include 'db_config.php';
   </div>
 </section>
 
-<!-- CART SECTION -->
+<!-- Cart -->
 <section id="cart">
   <h2 class="section-title">🛒 Your Cart</h2>
   <table class="cart-table">
@@ -87,7 +80,7 @@ include 'db_config.php';
       <tr><th>Game</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr>
     </thead>
     <tbody id="cart-items">
-      <tr><td colspan="4">Cart is empty</td></tr>
+      <tr><td colspan="5">Cart is empty</td></tr>
     </tbody>
   </table>
   <div class="cart-total">
