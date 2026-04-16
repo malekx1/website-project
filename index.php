@@ -99,9 +99,9 @@
   <form action="login.php" method="post">
   <h2 class="section-title">🔐 Login / Register</h2>
   <div class="login-form">
-    <input type="email" placeholder="Email" id="demo-email">
-    <input type="password" placeholder="Password" id="demo-password">
-    <button class="btn">Login</button>
+    <input type="email" placeholder="Email" id="demo-email" required>
+    <input type="password" placeholder="Password" id="demo-password" required>
+    <button  type="submit" name="login_btn" class="btn">Login</button>
     <p style="margin-top:1rem">New user? <a href="#" id="demo-register">Create account</a></p>
   </div>
   </form>
