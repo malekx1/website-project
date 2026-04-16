@@ -1,5 +1,7 @@
-<?php include 'db_config.php'; ?>
-<?php include 'includes/header.php'; ?>
+<?php 
+include 'includes/header.php'; 
+include 'db_config.php'; 
+?>
 
 <!-- HOME SECTION with creative background -->
 <section id="home" class="hero">
@@ -92,19 +94,6 @@
     <strong>Total: $<span id="cart-total-value">0.00</span></strong>
   </div>
   <button id="checkout-btn" class="btn checkout-btn">Proceed to Payment</button>
-</section>
-
-<!-- LOGIN / REGISTER DEMO -->
-<section id="login">
-  <form action="login.php" method="post">
-  <h2 class="section-title">🔐 Login / Register</h2>
-  <div class="login-form">
-    <input type="email" placeholder="Email" id="demo-email" required>
-    <input type="password" placeholder="Password" id="demo-password" required>
-    <button  type="submit" name="login_btn" class="btn">Login</button>
-    <p style="margin-top:1rem">New user? <a href="register.php" id="demo-register">Create account</a></p>
-  </div>
-  </form>
 </section>
 
 <?php include 'includes/footer.php'; ?>
