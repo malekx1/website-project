@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "db_config.php"; 
+include 'includes/header.php'; 
 
 $message = "";
 

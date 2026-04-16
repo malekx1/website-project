@@ -30,7 +30,11 @@ if(isset($_POST['email']) && isset($_POST['pwd'])){
                 $_SESSION['username'] = $user['username'];
                 $response['status'] = 'success';
                 $response['message'] = 'Login successful';
-                $response['redirect'] = 'profile.php?user_id=' . $user['id'];
+                $response['redirect'] = 'profile.php';
+                header('Content-Type: application/json');
+                echo json_encode($response);
+                header('Location: profile.php');
+                exit();
             } else {
                 $response['status'] = 'error';
                 $response['message'] = 'Incorrect password';

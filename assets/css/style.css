@@ -521,6 +521,31 @@ section {
   }
 }
 
+body {
+  /* 1. This makes the background cover the FULL height of the screen */
+  min-height: 100vh;
+
+  /* 2. This ensures the background doesn't repeat if the page is short */
+  background-attachment: fixed;
+
+  /* 3. Your blue gradient */
+  background: radial-gradient(circle at top right, #1b2838, #05090f);
+
+  /* Reset margins so there's no weird white/gray space at the edges */
+  margin: 0;
+  padding: 0;
+}
+
+/* If you are using a specific class for that section, add it here too */
+#register {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* This centers your form vertically */
+  align-items: center;
+}
+
 /* Make all text in the profile easier to read */
 .profile-layout {
   font-size: 1.2rem;
@@ -544,9 +569,10 @@ section {
   object-fit: cover;
   /* This prevents the image from looking "squashed" */
   border: 6px solid #67c1f5;
-  background: #1b2838;
+  background: #04254d;
   display: block;
   flex-shrink: 0;
+  margin-top: 15px;
 }
 
 /* Username and email next to profile picture */
