@@ -45,7 +45,7 @@ if (isset($_POST['update_profile'])) {
 }
 
 // Fetch user data
-$stmt = mysqli_prepare($conn, "SELECT id, username, email, profile_pic FROM users WHERE id = ?");
+$stmt = mysqli_prepare($conn, "SELECT id, username, email, pfp_url FROM users WHERE id = ?");
 mysqli_stmt_bind_param($stmt, "i", $u_id);
 mysqli_stmt_execute($stmt);
 $user_data = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
