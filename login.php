@@ -4,9 +4,9 @@ include "db_config.php";
 
 $response = array();
 
-if(isset($_POST['email']) && isset($_POST['password'])){
+if(isset($_POST['email']) && isset($_POST['pwd'])){
     $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
+    $password = trim($_POST['pwd']);
     
     // Validate email
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
