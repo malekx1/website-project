@@ -14,8 +14,8 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 // ==================== LOAD DATA FROM BACKEND ====================
 async function loadGames() {
   try {
-    // Use your existing api_products.php with action=get_all
-    const res = await fetch('api_products.php?action=get_all');
+    // Use your teammate's get_products.php (no api/ folder)
+    const res = await fetch('get_products.php');
     const data = await res.json();
     if(data.status === 'success') {
       allGames = data.data;
@@ -33,19 +33,22 @@ async function loadGames() {
 async function renderTopSelling() {
   const container = document.getElementById('top-grid');
   if(!container) return;
-  // Use the same API, just take first 4 as top selling (or you can create a separate endpoint)
-  const topGames = [...allGames].sort((a,b) => (b.popular || 0) - (a.popular || 0)).slice(0,4);
-  container.innerHTML = topGames.map(game => `
-    <div class="game-card">
-      <img src="${game.image_url}" alt="${game.name}" style="width:100%; height:180px; object-fit:cover;" onerror="this.src='https://placehold.co/300x180/1C2E4A/C1E8FF?text=No+Image'">
-      <div class="game-info">
-        <h3>${escapeHtml(game.name)}</h3>
-        <div class="game-price">$${parseFloat(game.price).toFixed(2)}</div>
-        <button class="add-to-cart" data-id="${game.product_id}">Add to Cart</button>
+  try {
+    // Use your teammate's top_selling.php
+    const res = await fetch('top_selling.php');
+    const topGames = await res.json();
+    container.innerHTML = topGames.map(game => `
+      <div class="game-card">
+        <img src="${game.image_url}" alt="${game.name}" style="width:100%; height:180px; object-fit:cover;" onerror="this.src='https://placehold.co/300x180/1C2E4A/C1E8FF?text=No+Image'">
+        <div class="game-info">
+          <h3>${escapeHtml(game.name)}</h3>
+          <div class="game-price">$${parseFloat(game.price).toFixed(2)}</div>
+          <button class="add-to-cart" data-id="${game.product_id}">Add to Cart</button>
+        </div>
       </div>
-    </div>
-  `).join('');
-  attachAddToCartEvents();
+    `).join('');
+    attachAddToCartEvents();
+  } catch(e) { console.error(e); }
 }
 
 function attachAddToCartEvents() {
@@ -201,39 +204,6 @@ function applyFiltersAndRender() {
   renderShop(currentCategory, currentSort);
 }
 
-// Checkout with backend
-async function checkout() {
-  if(cart.length === 0) {
-    showToast("Cart is empty", "fa-exclamation-triangle");
-    return;
-  }
-  // Simple check: if user is logged in, session will be there. For now, redirect to login if not.
-  const isLoggedIn = await fetch('api_user.php?action=get_profile').then(r => r.json()).then(d => d.status === 'success').catch(() => false);
-  if(!isLoggedIn) {
-    showToast("Please login first", "fa-exclamation-triangle");
-    setTimeout(() => window.location.href = 'login.php', 1500);
-    return;
-  }
-  try {
-    const res = await fetch('api_cart.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ action: 'add_to_library', product_id: cart[0].id, price: cart[0].price })
-    });
-    const data = await res.json();
-    if(data.status === 'success') {
-      showToast("Purchase successful! Thank you.", "fa-check-circle");
-      cart = [];
-      saveCart();
-      updateCartUI();
-    } else {
-      showToast("Checkout failed: " + (data.message || "Unknown error"), "fa-times-circle");
-    }
-  } catch(err) {
-    showToast("Network error", "fa-times-circle");
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   loadGames();
   updateCartUI();
@@ -254,8 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
-  document.getElementById('checkout-btn')?.addEventListener('click', checkout);
+  document.getElementById('checkout-btn')?.addEventListener('click', () => {
+    if(cart.length === 0) {
+      showToast("Cart is empty", "fa-exclamation-triangle");
+    } else {
+      alert("Checkout will be implemented by backend team.");
+    }
+  });
   
-  // Video placeholder
-  document.querySelector('.video-thumb')?.addEventListener('click', () => alert("Video tutorial would play here."));
+  document.querySelector('.video-thumb')?.addEventListener('click', () => {
+    alert("Video tutorial would play here.");
+  });
 });
