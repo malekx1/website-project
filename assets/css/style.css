@@ -496,6 +496,8 @@ section {
   margin: 10px 0;
   border-radius: 30px;
   border: none;
+  background: var(--blue);
+  color: white;
 }
 
 /* RESPONSIVE */
@@ -529,7 +531,8 @@ body {
   background-attachment: fixed;
 
   /* 3. Your blue gradient */
-  background: radial-gradient(circle at top right, #1b2838, #05090f);
+  background: var(--navy);
+
 
   /* Reset margins so there's no weird white/gray space at the edges */
   margin: 0;
