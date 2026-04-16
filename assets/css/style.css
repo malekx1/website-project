@@ -391,6 +391,29 @@ section {
   margin-bottom: 1rem;
 }
 
+/* 3D Pop-out Effect for Mario Kart only */
+.game-card.mario-3d {
+  perspective: 2500px;
+}
+
+.game-card.mario-3d .card-wrapper {
+  transition: transform 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.game-card.mario-3d:hover .card-wrapper {
+  transform: rotateX(8deg) rotateY(12deg) translateZ(15px);
+  box-shadow: 0 25px 35px rgba(0, 0, 0, 0.5);
+}
+
+.game-card.mario-3d img {
+  transition: transform 0.3s;
+}
+
+.game-card.mario-3d:hover img {
+  transform: scale(1.05);
+}
+
 .add-to-cart {
   background: var(--blue);
   color: white;
