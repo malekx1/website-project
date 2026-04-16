@@ -1,25 +1,37 @@
 <?php
-include "db_config.php"; // Using your connection file name
+session_start();
+include "db_config.php"; 
 
 $message = "";
 
 if (isset($_POST['register_btn'])) {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    // 1. Collect all three fields
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // 1. Check if the email already exists in the database
+    // 2. Check if the email already exists
     $check_email = "SELECT * FROM users WHERE email = '$email'";
     $check_result = mysqli_query($conn, $check_email);
 
     if (mysqli_num_rows($check_result) > 0) {
         $message = "Email already registered!";
     } else {
-        // 2. Insert the new user into the 'user' table
-        // We use 'pwd' to match your database column name
-        $sql = "INSERT INTO users (email, pwd) VALUES ('$email', '$password')";
+        // 3. Insert including the username column
+        // Make sure your table has a column named 'username'
+        $sql = "INSERT INTO users (username, email, pwd) VALUES ('$username', '$email', '$password')";
         
         if (mysqli_query($conn, $sql)) {
-            $message = "Account created successfully! <a href='login.php'>Login here</a>";
+            // 4. Get the ID of the user we just created
+            $new_user_id = mysqli_insert_id($conn);
+
+            // 5. Start the session automatically
+            $_SESSION['user_id'] = $new_user_id;
+            $_SESSION['username'] = $username;
+
+            // 6. Redirect straight to profile
+            header("Location: profile.php");
+            exit();
         } else {
             $message = "Error: " . mysqli_error($conn);
         }
@@ -45,12 +57,14 @@ if (isset($_POST['register_btn'])) {
         <?php endif; ?>
 
         <div class="login-form">
+            <input type="text" name="username" placeholder="Choose Username" required>
+            
             <input type="email" name="email" placeholder="Enter Email" required>
             <input type="password" name="password" placeholder="Create Password" required>
             
             <button type="submit" name="register_btn" class="btn">Register</button>
             
-            <p style="margin-top:1rem">Already have an account? <a href="login.php">Login</a></p>
+            <p style="margin-top:1rem">Already have an account? <a href="index.php#login">Login</a></p>
         </div>
     </form>
 </section>
