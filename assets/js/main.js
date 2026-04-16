@@ -43,7 +43,6 @@ function renderShop(filterCategory = "all", sortBy = "default") {
   if(filterCategory !== "all") {
     filtered = filtered.filter(game => game.category === filterCategory);
   }
-  // Sort
   if(sortBy === "price-asc") filtered.sort((a,b) => a.price - b.price);
   else if(sortBy === "price-desc") filtered.sort((a,b) => b.price - a.price);
   else if(sortBy === "popular") filtered.sort((a,b) => b.popular - a.popular);
@@ -51,19 +50,26 @@ function renderShop(filterCategory = "all", sortBy = "default") {
   const container = document.getElementById("shop-grid");
   if(!container) return;
   
-  container.innerHTML = filtered.map(game => `
-    <div class="game-card" data-category="${game.category}">
-      <img src="${game.img}" alt="${game.name}" style="width:100%; height:180px; object-fit:cover; background: var(--navy);">
-      <div class="game-info">
-        <h3>${game.name}</h3>
-        <div class="game-price">$${game.price}</div>
-        <div class="game-caption">${game.caption}</div>
-        <button class="add-to-cart" data-id="${game.id}">Add to Cart</button>
+  container.innerHTML = filtered.map(game => {
+    // Only Mario Kart (id 1) gets the 3D effect
+    const isMario = game.id === 1;
+    const cardClass = isMario ? 'game-card mario-3d' : 'game-card';
+    
+    return `
+      <div class="${cardClass}" data-category="${game.category}">
+        <div class="card-wrapper">
+          <img src="${game.img}" alt="${game.name}">
+          <div class="game-info">
+            <h3>${game.name}</h3>
+            <div class="game-price">$${game.price}</div>
+            <div class="game-caption">${game.caption}</div>
+            <button class="add-to-cart" data-id="${game.id}">Add to Cart</button>
+          </div>
+        </div>
       </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
   
-  // attach events
   document.querySelectorAll('.add-to-cart').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = parseInt(btn.dataset.id);
