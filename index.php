@@ -1,9 +1,8 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+include 'includes/header.php'; 
+include 'db_config.php'; 
+?>
 
-<section id="home">...</section>
-<section id="shop">...</section>
-
-<?php include 'includes/footer.php'; ?>
 <!-- HOME SECTION with creative background -->
 <section id="home" class="hero">
   <h2>Your one-stop video game centre</h2>
