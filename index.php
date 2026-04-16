@@ -102,7 +102,7 @@
     <input type="email" placeholder="Email" id="demo-email" required>
     <input type="password" placeholder="Password" id="demo-password" required>
     <button  type="submit" name="login_btn" class="btn">Login</button>
-    <p style="margin-top:1rem">New user? <a href="#" id="demo-register">Create account</a></p>
+    <p style="margin-top:1rem">New user? <a href="register.php" id="demo-register">Create account</a></p>
   </div>
   </form>
 </section>
