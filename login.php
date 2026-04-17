@@ -12,8 +12,7 @@ if (isset($_POST['login_btn'])) {
 
     if ($result && mysqli_num_rows($result) > 0) {
         $user = mysqli_fetch_assoc($result);
-        if (password_verify($password, $user['pwd']) || $password === $user['pwd']) {
-            if ($password === $user['pwd']) {
+        if (password_verify($password, $user['pwd'])) {            if ($password === $user['pwd']) {
                 $hashed = password_hash($password, PASSWORD_DEFAULT);
                 mysqli_query($conn, "UPDATE users SET pwd = '$hashed' WHERE id = {$user['id']}");
             }
