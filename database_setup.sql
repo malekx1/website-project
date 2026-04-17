@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 16, 2026 at 10:49 AM
+-- Generation Time: Apr 16, 2026 at 10:14 PM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `library` (
   PRIMARY KEY (`order_id`),
   KEY `users_id` (`users_id`),
   KEY `products_id` (`products_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `library`
@@ -70,7 +70,11 @@ INSERT INTO `library` (`order_id`, `users_id`, `products_id`, `purchase_date`, `
 (1, 4, 7, '2026-04-15 23:36:29', 69.99),
 (2, 5, 1, '2026-04-15 23:41:12', 59.99),
 (3, 2, 2, '2026-04-15 23:43:33', 14.99),
-(4, 2, 7, '2026-04-15 23:43:51', 69.99);
+(4, 2, 7, '2026-04-15 23:43:51', 69.99),
+(7, 17, 2, '2026-04-16 15:49:10', 59.99),
+(6, 17, 2, '2026-04-16 15:49:51', 59.99),
+(8, 18, 4, '2026-04-16 16:08:26', 29.99),
+(9, 18, 4, '2026-04-16 16:08:43', 29.99);
 
 -- --------------------------------------------------------
 
@@ -97,12 +101,13 @@ CREATE TABLE IF NOT EXISTS `products` (
 --
 
 INSERT INTO `products` (`product_id`, `name`, `description`, `price`, `image_url`, `video_url`, `created_at`, `category_id`) VALUES
-(1, 'Mario Kart 8 Deluxe\r\n', 'Fun racing game', 59.99, 'Mario Kart 8 Deluxe .jpg', 'https://www.youtube.com/watch?v=3UdRDlyJXLg&list=RD3UdRDlyJXLg&start_radio=1', '2026-04-12 18:29:12', 4),
+(1, 'Mario Kart 8 Deluxe\r\n', 'Fun racing game', 59.99, 'MarioKart.jpg', 'https://www.youtube.com/watch?v=3UdRDlyJXLg&list=RD3UdRDlyJXLg&start_radio=1', '2026-04-12 18:29:12', 4),
 (2, 'Stardew Valley', 'A peaceful country-life RPG where you build the farm of your dreams.', 14.99, 'stardewValley.jpg', 'https://www.youtube.com/watch?v=ot7uXNQskhs', '2026-04-12 18:33:47', 1),
 (3, 'Resident Evil 4', 'Survival is just the beginning. A daring rescue mission in a secluded European village.', 59.99, 'resident_evil_4.jpg', 'https://www.youtube.com/watch?v=j5Xv2lM9wes', '2026-04-12 18:36:06', 3),
 (4, 'Hollow Knight', 'An epic action-adventure through a vast ruined kingdom of insects and heroes.', 14.99, 'hollow_knight.jpg', 'https://www.youtube.com/watch?v=6XGeJwsUP9c', '2026-04-12 18:40:19', 1),
 (5, 'Terraria', 'Dig, fight, explore, build! Nothing is impossible in this action-packed adventure game.', 9.99, 'terraria.jpg', 'https://www.youtube.com/watch?v=w7uOhFTrrq0', '2026-04-15 22:53:04', 1),
-(6, 'Cry of Fear', 'A psychological single-player and co-op horror game set in a deserted town filled with horrific creatures.', 0.00, 'cry_of_fear.jpg', 'https://www.youtube.com/watch?v=-lKZuJ0Novc', '2026-04-15 22:56:16', 3),
+(6, 'Cry of Fear', 'A psychological single-player and co-op horror game set in a deserted town filled with horrific creatures.', 0.00, 'cryoffear.jpg', 'https://www.youtube.com/watch?v=-lKZuJ0Novc', '2026-04-15 22:56:16', 3),
+(13, 'Assasin Creed Mirage', 'A popular historical action-adventure video game franchise published by Ubisoft, primarily developed by Ubisoft Montreal.', 49.99, 'assasincreed.jpg', 'https://www.youtube.com/watch?v=x55lAlFtXmw', '2026-04-16 22:10:40', 3),
 (7, 'Silent Hill 2', 'Experience a master-class in psychological survival horror. Having received a letter from his deceased wife, James returns to where they made so many memories.', 69.99, 'sh2_remake.jpg', 'https://www.youtube.com/watch?v=pyC_qiW_4ZY', '2026-04-15 23:04:40', 3),
 (8, 'Forza Horizon 5', 'Your ultimate Horizon adventure awaits! Explore the vibrant and ever-evolving open world landscapes of Mexico with limitless, fun driving action.', 59.99, 'forza5.jpg', 'https://www.youtube.com/watch?v=SsZoqBH3aYw', '2026-04-15 23:08:03', 4),
 (9, 'Rocket League', 'Soc-car! High-octane PvP action that combines arcade-style soccer with vehicular mayhem. Easy to learn, difficult to master.', 0.00, 'rocket_league.jpg', 'https://www.youtube.com/watch?v=P8eTMmw85Ug', '2026-04-15 23:09:58', 4),
@@ -153,23 +158,24 @@ CREATE TABLE IF NOT EXISTS `users` (
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `pwd` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `profile_pic` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `pfp_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `pwd`, `email`, `profile_pic`, `created_at`) VALUES
+INSERT INTO `users` (`id`, `username`, `pwd`, `email`, `pfp_url`, `created_at`) VALUES
 (1, 'janedoe11', 'Jane23', 'janedoe@gmail.com', 'jane_pfp.jpg', '2026-04-01 22:48:41'),
 (2, 'GamerPro99', 'securePassword123', 'gamerpro01@gmail.com', 'default_avatar.jpg', '2026-04-16 01:24:31'),
 (3, 'Ghostface_26', 'password456', 'ghostFace@gmail.com', 'user_ghost.png', '2026-04-16 01:28:53'),
 (4, 'MarcoD', 'password123', 'marcd@gmail.com', 'user_marc.jpg', '2026-04-16 01:31:10'),
 (5, 'amine213', 'monPass99', 'aminee@gmail.com', 'amine_profile.jpg', '2026-04-16 01:32:05'),
-(6, 'mxlekk02', 'pass02', 'malek02@gmail.com', 'malek_profile.jpg', '2026-04-16 01:33:13'),
-(7, 'douaa01', 'pass021', 'douaa01@gmail.com', 'douaa_profile.jpg', '2026-04-16 01:33:48');
+(6, 'mxlekk02', 'pwdd', 'malek02@gmail.com', 'malek.jpg', '2026-04-16 01:33:13'),
+(7, 'douaa01', 'pass021', 'douaa01@gmail.com', 'douaa_profile.jpg', '2026-04-16 01:33:48'),
+(8, 'interlinked01', 'sasa', 'katsumiph22@gmail.com', '', '2026-04-16 17:21:03');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
