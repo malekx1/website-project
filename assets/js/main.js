@@ -1,6 +1,6 @@
-// ==================== GAME STORE FRONTEND ====================
+// ==================== SMOOTH SCROLLING ====================
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
+    anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) target.scrollIntoView({ behavior: 'smooth' });
@@ -10,31 +10,20 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
 let allGames = [];
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-// Load games from API
+// ==================== LOAD GAMES FROM API ====================
 async function loadGames() {
     try {
-        const res = await fetch('get_products.php');
-        const text = await res.text();
-        console.log("Raw response:", text.substring(0, 200)); // log first 200 chars
-        
-        // Try to parse JSON
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch(e) {
-            console.error("JSON parse error:", e);
-            document.getElementById('shop-grid').innerHTML = '<p>Error: Invalid JSON from server. Check console.</p>';
-            return;
-        }
-        
-        if (data.status === 'success' && data.data) {
-            allGames = data.data;
+        const res = await fetch('api/get_products.php');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+            allGames = data;
             renderShop();
             renderTopSelling();
         } else {
-            document.getElementById('shop-grid').innerHTML = '<p>Error: ' + (data.message || 'Unknown') + '</p>';
+            console.error("Invalid data:", data);
+            document.getElementById('shop-grid').innerHTML = '<p>Error loading games.</p>';
         }
-    } catch(err) {
+    } catch (err) {
         console.error("Fetch error:", err);
         document.getElementById('shop-grid').innerHTML = '<p>Network error: ' + err.message + '</p>';
     }
@@ -47,7 +36,7 @@ function renderShop() {
         container.innerHTML = '<p>No games found.</p>';
         return;
     }
-    
+
     let html = '';
     for (let game of allGames) {
         let img = game.image_url;
@@ -55,9 +44,9 @@ function renderShop() {
             img = 'assets/images/' + img;
         }
         if (!img) img = 'https://placehold.co/300x180/1C2E4A/C1E8FF?text=No+Image';
-        
+
         html += `
-            <div class="game-card" data-category="${game.category || ''}">
+            <div class="game-card" data-category="${game.category_name || ''}">
                 <div class="card-wrapper">
                     <img src="${img}" alt="${escapeHtml(game.name)}" style="width:100%; height:180px; object-fit:cover;" onerror="this.src='https://placehold.co/300x180/1C2E4A/C1E8FF?text=Error'">
                     <div class="game-info">
@@ -79,7 +68,7 @@ function renderTopSelling() {
     if (!container) return;
     const top = allGames.slice(0, 4);
     if (!top.length) return;
-    
+
     let html = '';
     for (let game of top) {
         let img = game.image_url;
@@ -87,7 +76,7 @@ function renderTopSelling() {
             img = 'assets/images/' + img;
         }
         if (!img) img = 'https://placehold.co/300x180/1C2E4A/C1E8FF?text=No+Image';
-        
+
         html += `
             <div class="game-card">
                 <img src="${img}" alt="${escapeHtml(game.name)}" style="width:100%; height:180px; object-fit:cover;" onerror="this.src='https://placehold.co/300x180/1C2E4A/C1E8FF?text=Error'">
@@ -151,7 +140,7 @@ function updateCartUI() {
     });
     tbody.innerHTML = rows;
     document.getElementById('cart-total-value').textContent = total.toFixed(2);
-    
+
     document.querySelectorAll('.cart-qty').forEach(inp => {
         inp.onchange = () => {
             const id = parseInt(inp.dataset.id);
@@ -177,9 +166,59 @@ function updateCartUI() {
     });
 }
 
+// ==================== CHECKOUT ====================
+async function checkout() {
+    if (cart.length === 0) {
+        alert("Cart is empty");
+        return;
+    }
+    try {
+        const sessionRes = await fetch('api/check_session.php');
+        const sessionData = await sessionRes.json();
+        if (!sessionData.logged_in) {
+            alert("Please login first");
+            window.location.href = 'login.php';
+            return;
+        }
+    } catch (e) {
+        alert("Could not verify login status. Please try again.");
+        return;
+    }
+
+    const payload = {
+        cart: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity
+        }))
+    };
+
+    try {
+        const res = await fetch('api/checkout.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert("Purchase successful! Thank you.");
+            cart = [];
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            updateCartCount();
+        } else {
+            alert("Checkout failed: " + (data.error || "Unknown error"));
+            console.error("Error details:", data);
+        }
+    } catch (err) {
+        alert("Network error. Please try again.");
+    }
+}
+
 function escapeHtml(str) {
     if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
+    return str.replace(/[&<>]/g, function (m) {
         if (m === '&') return '&amp;';
         if (m === '<') return '&lt;';
         if (m === '>') return '&gt;';
@@ -187,9 +226,11 @@ function escapeHtml(str) {
     });
 }
 
-// Start everything
+// ==================== START ====================
 document.addEventListener('DOMContentLoaded', () => {
     loadGames();
     updateCartCount();
     updateCartUI();
+    const checkoutBtn = document.getElementById('checkout-btn');
+    if (checkoutBtn) checkoutBtn.addEventListener('click', checkout);
 });
