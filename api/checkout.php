@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-Type: application/json');
 include '../db_config.php';
 
 if (!isset($_SESSION['user_id'])) {
@@ -23,7 +24,6 @@ foreach ($data['cart'] as $item) {
     $price = $item['price'];
     $quantity = $item['quantity'];
     
-    // Insert each item into library (or you could store quantity in library if you add a qty column)
     for ($i = 0; $i < $quantity; $i++) {
         $sql = "INSERT INTO library (users_id, products_id, price, purchase_date) VALUES (?, ?, ?, NOW())";
         $stmt = mysqli_prepare($conn, $sql);
