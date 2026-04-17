@@ -16,7 +16,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <body>
 <header>
   <div class="logo">
-    <h1><i class="fas fa-gamepad"></i> Ranesh Games</h1>
+    <h1><i class="fas fa-play-circle"></i> Play <span>Verse</span></h1>
   </div>
   <nav>
     <ul>

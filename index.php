@@ -35,13 +35,13 @@
 
 <!-- Top Selling -->
 <section id="top-selling">
-  <h2 class="section-title">🔥 Top Selling Games</h2>
+  <h2 class="section-title">🔥Top Selling Games</h2>
   <div class="games-grid" id="top-grid"></div>
 </section>
 
 <!-- Shop -->
 <section id="shop">
-  <h2 class="section-title">🎮 Game Collection</h2>
+  <h2 class="section-title">🎮Game Collection</h2>
   <div class="filter-bar">
     <select id="category-filter">
       <option value="all">All Categories</option>
@@ -89,5 +89,17 @@
   </div>
   <button id="checkout-btn" class="btn checkout-btn">Proceed to Payment</button>
 </section>
-
+<div id="gameModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div id="modal-body"></div>
+  </div>
+</div>
+<!-- Game Detail Modal -->
+<div id="gameModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
 <?php include 'includes/footer.php'; ?>

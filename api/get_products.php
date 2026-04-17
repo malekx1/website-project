@@ -1,15 +1,26 @@
 <?php
 header('Content-Type: application/json');
+error_reporting(0);
+ini_set('display_errors', 0);
+
 include '../db_config.php';
 
-$sql = "SELECT p.product_id, p.name, p.description, p.price, p.image_url, p.video_url, c.category_name 
-        FROM products p 
-        LEFT JOIN categories c ON p.category_id = c.category_id";
-$result = mysqli_query($conn, $sql);
+$query = "SELECT p.product_id, p.name, p.description, p.price, 
+          p.image_url, p.video_url, p.created_at,
+          c.category_name as category
+          FROM products p
+          LEFT JOIN categories c ON p.category_id = c.category_id";
 
+$result = mysqli_query($conn, $query);
 $products = [];
-while ($row = mysqli_fetch_assoc($result)) {
-    $row['image_url'] = 'assets/images/' . $row['image_url'];
-    $products[] = $row;
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $row['name'] = trim(preg_replace('/\s+/', ' ', $row['name']));
+        $products[] = $row;
+    }
+    echo json_encode(["status" => "success", "data" => $products]);
+} else {
+    echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
 }
-echo json_encode($products);
+?>
