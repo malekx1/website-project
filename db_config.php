@@ -3,13 +3,9 @@ $host = "localhost";
 $user = "root";
 $pass = "";
 $db_name = "my_db";
+$port = 3307;   // ← CRITICAL
 
-// Remove port 3307 – use default 3306 (XAMPP)
-$conn = mysqli_connect($host, $user, $pass, $db_name, 3307);
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
+$conn = mysqli_connect($host, $user, $pass, $db_name, $port);
+if (!$conn) die("Connection failed: " . mysqli_connect_error());
 mysqli_set_charset($conn, "utf8");
 ?>

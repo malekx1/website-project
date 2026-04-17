@@ -57,6 +57,7 @@
       <option value="price-desc">Price: High to Low</option>
     </select>
   </div>
+  <div class="games-grid" id="top-grid"></div>
   <div class="games-grid" id="shop-grid"></div>
 </section>
 
