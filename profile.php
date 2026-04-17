@@ -14,17 +14,21 @@ if (isset($_POST['update_profile'])) {
     $new_username = mysqli_real_escape_string($conn, $_POST['username']);
     
     // Handle file upload
-    if (isset($_FILES['pfp_file']) && $_FILES['pfp_file']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = "uploads/";
-        if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-        $file_name = time() . "_" . basename($_FILES['pfp_file']['name']);
-        $target_file = $upload_dir . $file_name;
-        if (move_uploaded_file($_FILES['pfp_file']['tmp_name'], $target_file)) {
-            // Update both username and profile_pic
-            $update = mysqli_prepare($conn, "UPDATE users SET username = ?, pfp_url = ? WHERE id = ?");
-            mysqli_stmt_bind_param($update, "ssi", $new_username, $target_file, $u_id);
-            mysqli_stmt_execute($update);
-            mysqli_stmt_close($update);
+    // ... inside your update_profile IF block ...
+if (isset($_FILES['pfp_file']) && $_FILES['pfp_file']['error'] === UPLOAD_ERR_OK) {
+    $upload_dir = "uploads/";
+    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+    
+    $file_name = time() . "_" . basename($_FILES['pfp_file']['name']);
+    $target_file = $upload_dir . $file_name;
+    
+    if (move_uploaded_file($_FILES['pfp_file']['tmp_name'], $target_file)) {
+        // We use pfp_url here
+        $update = mysqli_prepare($conn, "UPDATE users SET username = ?, pfp_url = ? WHERE id = ?");
+        mysqli_stmt_bind_param($update, "ssi", $new_username, $target_file, $u_id);
+        mysqli_stmt_execute($update);
+        mysqli_stmt_close($update);
+    
         } else {
             // Error uploading file, but still update username
             $update = mysqli_prepare($conn, "UPDATE users SET username = ? WHERE id = ?");
@@ -74,7 +78,7 @@ $library_result = mysqli_stmt_get_result($lib_stmt);
         <div class="user-hero" style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
             <div class="pfp-wrapper" style="position: relative;">
                 <?php 
-                    $pfp = !empty($user_data['profile_pic']) ? $user_data['profile_pic'] : 'https://ui-avatars.com/api/?name='.urlencode($user_data['username']).'&background=1b2838&color=67c1f5&size=150';
+                    $pfp = !empty($user_data['pfp_url']) ? $user_data['pfp_url'] : 'https://ui-avatars.com/api/?name='.urlencode($user_data['username']).'&background=1b2838&color=67c1f5&size=150';
                 ?>
                 <img src="<?php echo $pfp; ?>" class="round-pfp" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent);">
                 <button onclick="document.getElementById('edit-box').style.display='flex'" class="edit-overlay" style="position: absolute; bottom: 5px; right: 5px; background: var(--accent); border: none; border-radius: 50%; width: 32px; height: 32px; cursor: pointer;">
