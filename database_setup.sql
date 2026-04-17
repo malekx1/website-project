@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 16, 2026 at 10:14 PM
+-- Generation Time: Apr 17, 2026 at 02:49 PM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `pfp_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -173,9 +173,12 @@ INSERT INTO `users` (`id`, `username`, `pwd`, `email`, `pfp_url`, `created_at`) 
 (3, 'Ghostface_26', 'password456', 'ghostFace@gmail.com', 'user_ghost.png', '2026-04-16 01:28:53'),
 (4, 'MarcoD', 'password123', 'marcd@gmail.com', 'user_marc.jpg', '2026-04-16 01:31:10'),
 (5, 'amine213', 'monPass99', 'aminee@gmail.com', 'amine_profile.jpg', '2026-04-16 01:32:05'),
-(6, 'mxlekk02', 'pwdd', 'malek02@gmail.com', 'malek.jpg', '2026-04-16 01:33:13'),
+(6, 'malek02', '$2y$10$02abXo85cvJZlo.aQs4vn.4yy57lDF7iMbUWOIhuOYBRDSpcZakNm', 'malek02@gmail.com', 'uploads/1776419951_savedWallpaper.jpg', '2026-04-16 01:33:13'),
 (7, 'douaa01', 'pass021', 'douaa01@gmail.com', 'douaa_profile.jpg', '2026-04-16 01:33:48'),
-(8, 'interlinked01', 'sasa', 'katsumiph22@gmail.com', '', '2026-04-16 17:21:03');
+(8, 'interlinked01', 'sasa', 'katsumiph22@gmail.com', '', '2026-04-16 17:21:03'),
+(29, 'pp', '$2y$10$4CI.LzuW18igXUMS2S6GLO3xgiHZUWEqoMkjRqONQ2/QeWXuIE5M2', 'pp@gmail.com', '', '2026-04-17 14:40:19'),
+(30, 'pa', '$2y$10$AexWrBjSgzSoHKJ.aKAxQOJMAQjqiGN.V8DmYJergdiVpF.kMk9kS', 'pa@gmail.com', '', '2026-04-17 15:17:44'),
+(28, 'mm', '$2y$10$0ELbcSsDk.5iVVvSfl1EKuYJrOrNQ3meOTUueMTf/rSIqg0gIvp6u', 'mama@gmail.com', '', '2026-04-17 00:23:44');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
