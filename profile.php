@@ -21,7 +21,7 @@ if (isset($_POST['update_profile'])) {
         $target_file = $upload_dir . $file_name;
         if (move_uploaded_file($_FILES['pfp_file']['tmp_name'], $target_file)) {
             // Update both username and profile_pic
-            $update = mysqli_prepare($conn, "UPDATE users SET username = ?, profile_pic = ? WHERE id = ?");
+            $update = mysqli_prepare($conn, "UPDATE users SET username = ?, pfp_url = ? WHERE id = ?");
             mysqli_stmt_bind_param($update, "ssi", $new_username, $target_file, $u_id);
             mysqli_stmt_execute($update);
             mysqli_stmt_close($update);
