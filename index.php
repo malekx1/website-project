@@ -1,14 +1,45 @@
 <?php include 'includes/header.php'; ?>
-<!-- HOME SECTION with animated gradient -->
+
+<!-- Hero Section with animated gradient -->
 <section id="home" class="hero">
-  <h2>Your one-stop video game centre</h2>
-  <p>Latest releases, retro classics, indie gems — we have them all.</p>
-  <a href="#shop" class="btn">SHOP NOW</a>
+  <div class="hero-content">
+    <div class="welcome-badge">
+      <i class="fas fa-gamepad"></i> Welcome to Play Verse
+    </div>
+    <h1 class="glitch-text">
+      <span class="typing-text"></span>
+      <span class="cursor">|</span>
+    </h1>
+    <p class="hero-subtitle moving-paragraph">Latest releases, retro classics, indie gems — we have them all.</p>
+    <div class="hero-buttons">
+      <a href="#shop" class="btn pulse-btn">🎮 SHOP NOW</a>
+      <a href="#how-to-order" class="btn outline-btn">📖 How It Works</a>
+    </div>
+  </div>
+  <canvas id="particleCanvas" class="hero-particles"></canvas>
+  <div class="hero-floaters">
+    <div class="floating-icon"><i class="fas fa-joystick"></i></div>
+    <div class="floating-icon"><i class="fas fa-trophy"></i></div>
+    <div class="floating-icon"><i class="fas fa-users"></i></div>
+  </div>
 </section>
 
+<!-- Featured Games Slider -->
+<!-- Featured Games Carousel (Large Rectangle) -->
+<section class="featured-carousel">
+  <h2 class="section-title"><i class="fas fa-fire"></i> Featured & Recommended</h2>
+  <div class="carousel-container">
+    <button class="carousel-arrow prev" id="carouselPrev">&#10094;</button>
+    <div class="carousel-slide" id="carouselSlide">
+      <!-- Dynamic content will be injected by JavaScript -->
+    </div>
+    <button class="carousel-arrow next" id="carouselNext">&#10095;</button>
+  </div>
+  <div class="carousel-dots" id="carouselDots"></div>
+</section>
 <!-- How to Order -->
 <section id="how-to-order">
-  <h2 class="section-title">How to Order</h2>
+  <h2 class="section-title"><i class="fas fa-shopping-cart"></i> How to Order</h2>
   <div class="how-to-order">
     <div class="step">
       <div class="step-circle"><i class="fas fa-search fa-2x"></i></div>
@@ -26,22 +57,17 @@
       <p>Pay securely</p>
     </div>
   </div>
-  
-  <!-- VIDEO TUTORIAL with real YouTube link -->
-  <div class="video-tutorial">
-  <iframe width="100%" height="400" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="How to Order" frameborder="0" allowfullscreen></iframe>
-  </div>
 </section>
 
-<!-- Top Selling -->
+<!-- Top Selling Games -->
 <section id="top-selling">
-  <h2 class="section-title">🔥Top Selling Games</h2>
+  <h2 class="section-title"><i class="fas fa-trophy"></i> Top Selling Games</h2>
   <div class="games-grid" id="top-grid"></div>
 </section>
 
-<!-- Shop -->
+<!-- Game Collection (Shop) -->
 <section id="shop">
-  <h2 class="section-title">🎮Game Collection</h2>
+  <h2 class="section-title"><i class="fas fa-gamepad"></i> Game Collection</h2>
   <div class="filter-bar">
     <select id="category-filter">
       <option value="all">All Categories</option>
@@ -52,20 +78,18 @@
     </select>
     <select id="sort-select">
       <option value="default">Default</option>
-      <option value="popular">Most Popular</option>
       <option value="price-asc">Price: Low to High</option>
       <option value="price-desc">Price: High to Low</option>
     </select>
   </div>
-  <div class="games-grid" id="top-grid"></div>
   <div class="games-grid" id="shop-grid"></div>
 </section>
 
-<!-- Categories -->
+<!-- Browse by Genre -->
 <section id="categories">
-  <h2 class="section-title">📂 Browse by Category</h2>
+  <h2 class="section-title"><i class="fas fa-tags"></i> Browse by Genre</h2>
   <div class="categories-buttons">
-    <button class="cat-btn active" data-cat="all">All</button>
+    <button class="cat-btn active" data-cat="all">✨ All Games</button>
     <button class="cat-btn" data-cat="Racing">🏎️ Racing</button>
     <button class="cat-btn" data-cat="Indie">🎨 Indie</button>
     <button class="cat-btn" data-cat="Horror">👻 Horror</button>
@@ -73,33 +97,18 @@
   </div>
 </section>
 
-<!-- Cart -->
-<section id="cart">
-  <h2 class="section-title">🛒 Your Cart</h2>
-  <table class="cart-table">
-    <thead>
-      <tr><th>Game</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr>
-    </thead>
-    <tbody id="cart-items">
-      <tr><td colspan="5">Cart is empty</td></tr>
-    </tbody>
-  </table>
-  <div class="cart-total">
-    <strong>Total: $<span id="cart-total-value">0.00</span></strong>
-  </div>
-  <button id="checkout-btn" class="btn checkout-btn">Proceed to Payment</button>
-</section>
+<!-- Game Detail Modal -->
 <div id="gameModal" class="modal">
   <div class="modal-content">
     <span class="close-modal">&times;</span>
     <div id="modal-body"></div>
   </div>
 </div>
-<!-- Game Detail Modal -->
-<div id="gameModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div id="modal-body"></div>
-    </div>
+
+<!-- Hidden elements to satisfy main.js (cart functions) -->
+<div style="display: none;">
+  <tbody id="cart-items"></tbody>
+  <span id="cart-total-value"></span>
 </div>
+
 <?php include 'includes/footer.php'; ?>

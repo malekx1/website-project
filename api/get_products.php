@@ -1,8 +1,5 @@
 <?php
 header('Content-Type: application/json');
-error_reporting(0);
-ini_set('display_errors', 0);
-
 include '../db_config.php';
 
 $query = "SELECT p.product_id, p.name, p.description, p.price, 
@@ -13,14 +10,9 @@ $query = "SELECT p.product_id, p.name, p.description, p.price,
 
 $result = mysqli_query($conn, $query);
 $products = [];
-
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $row['name'] = trim(preg_replace('/\s+/', ' ', $row['name']));
-        $products[] = $row;
-    }
-    echo json_encode(["status" => "success", "data" => $products]);
-} else {
-    echo json_encode(["status" => "error", "message" => mysqli_error($conn)]);
+while ($row = mysqli_fetch_assoc($result)) {
+    $row['name'] = trim(preg_replace('/\s+/', ' ', $row['name']));
+    $products[] = $row;
 }
+echo json_encode(["status" => "success", "data" => $products]);
 ?>

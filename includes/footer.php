@@ -15,10 +15,10 @@
         <div class="footer-col">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#shop">Shop</a></li>
-                <li><a href="#categories">Categories</a></li>
-                <li><a href="#cart">Cart</a></li>
+                <li><a href="index.php#home">Home</a></li>
+                <li><a href="index.php#shop">Shop</a></li>
+                <li><a href="index.php#categories">Categories</a></li>
+                <li><a href="cart.php">Cart</a></li>
             </ul>
         </div>
         <div class="footer-col">
@@ -45,6 +45,15 @@
     </div>
 </footer>
 
-<script src="http://localhost/website-project/assets/js/main.js"></script>
+<!-- Global Loading Overlay -->
+<div id="globalLoadingOverlay" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+    <div class="loader"></div>
+    <p style="color: var(--accent); margin-top: 20px;">Loading...</p>
+</div>
+<script>
+function showGlobalLoading() { document.getElementById('globalLoadingOverlay').style.display = 'flex'; }
+function hideGlobalLoading() { document.getElementById('globalLoadingOverlay').style.display = 'none'; }
+</script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
